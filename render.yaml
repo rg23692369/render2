@@ -1,0 +1,45 @@
+services:
+  # -------------------- Backend --------------------
+  - type: web
+    name: astrotalk-server
+    env: node
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    plan: free
+    branch: main
+    region: oregon
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: MONGO_URI
+        sync: false         # Set your MongoDB URI in Render dashboard
+      - key: JWT_SECRET
+        sync: false         # Set JWT secret in Render dashboard
+      - key: CLIENT_URL
+        value: "https://astrotalk-client.onrender.com"  # frontend deployed URL
+      - key: RAZORPAY_KEY_ID
+        sync: false         # Set Razorpay key in dashboard
+      - key: RAZORPAY_KEY_SECRET
+        sync: false         # Set Razorpay secret in dashboard
+
+  # -------------------- Frontend --------------------
+  - type: static
+    name: astrotalk-client
+    env: static
+    buildCommand: "npm install && npm run build"
+    startCommand: ""
+    plan: free
+    branch: main
+    region: oregon
+    rootDir: frontend       # your frontend folder
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: "https://astrotalk-server.onrender.com/api"  # backend API URL
+      - key: VITE_RAZORPAY_KEY_ID
+        sync: false           # Set Razorpay key in Render dashboard
+    redirects:
+      - source: "/*"
+        destination: "/index.html"
+        type: 200
