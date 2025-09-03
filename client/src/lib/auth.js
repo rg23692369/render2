@@ -1,36 +1,32 @@
-import jwtDecode from "jwt-decode"; // ✅ default import
+// frontend/src/lib/auth.js
+import jwtDecode from "jwt-decode"; // ✅ default import works with Vite
 
 export const TOKEN_KEY = "token";
 
-// ✅ Check if user is authenticated
 export const isAuthed = () => !!localStorage.getItem(TOKEN_KEY);
 
-// ✅ Set, get, and clear JWT token
-export const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
+export const setToken = (t) => localStorage.setItem(TOKEN_KEY, t);
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const clearToken = () => localStorage.removeItem(TOKEN_KEY);
 
-// ✅ Get user info from token
 export const getUser = () => {
-  const token = getToken();
-  if (!token) return null;
+  const t = getToken();
+  if (!t) return null;
   try {
-    return jwtDecode(token); // expects { id, username, role }
+    return jwtDecode(t); // expects { id, username, role }
   } catch (e) {
     console.warn("Invalid token:", e);
     return null;
   }
 };
 
-// ✅ Return authorization header for API calls
 export const authHeader = () => {
-  const token = getToken();
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  const t = getToken();
+  return t ? { Authorization: `Bearer ${t}` } : {};
 };
 
-// ✅ Logout function
 export const logout = (navigate) => {
   clearToken();
   if (navigate) navigate("/login");
-  else window.location.href = "/login"; // fallback
+  else window.location.href = "/login";
 };

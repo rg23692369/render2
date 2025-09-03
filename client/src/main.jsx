@@ -7,11 +7,11 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import DashboardUser from "./pages/DashboardUser.jsx";
 import DashboardAstrologer from "./pages/DashboardAstrologer.jsx";
-
-import "./styles.css";
 import { isAuthed, getUser } from "./lib/auth.js";
 
-// Guarded route by auth + optional role
+import "./styles.css";
+
+// Guarded route
 function ProtectedRoute({ children, role }) {
   if (!isAuthed()) return <Navigate to="/login" replace />;
   const user = getUser();
@@ -25,7 +25,6 @@ createRoot(document.getElementById("root")).render(
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-
       <Route
         path="/dashboard/user"
         element={
@@ -42,8 +41,6 @@ createRoot(document.getElementById("root")).render(
           </ProtectedRoute>
         }
       />
-
-      {/* fallback: unknown route → home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </BrowserRouter>

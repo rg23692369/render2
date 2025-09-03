@@ -1,16 +1,14 @@
+// backend/src/models/Booking.js
 import mongoose from "mongoose";
 
 const bookingSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  astrologer: { type: mongoose.Schema.Types.ObjectId, ref: "AstrologerProfile", required: true },
-  type: { type: String, enum: ["call", "chat"], required: true },
-  minutes: { type: Number, required: true, min: 1 },
-  amount: { type: Number, required: true }, // in paise
-  currency: { type: String, default: "INR" },
-  status: { type: String, enum: ["created", "paid", "completed", "cancelled"], default: "created" },
-  razorpayOrderId: { type: String },
-  razorpayPaymentId: { type: String },
-  razorpaySignature: { type: String }
-}, { timestamps: true });
+  astrologer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  startTime: { type: Date, required: true },
+  endTime: { type: Date, required: true },
+  amount: { type: Number, required: true },
+  status: { type: String, enum: ["pending", "completed", "cancelled"], default: "pending" },
+  createdAt: { type: Date, default: Date.now },
+});
 
 export default mongoose.model("Booking", bookingSchema);
