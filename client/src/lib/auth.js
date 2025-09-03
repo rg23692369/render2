@@ -1,5 +1,6 @@
 // frontend/src/lib/auth.js
-import jwtDecode from "jwt-decode"; // ✅ default import works with Vite
+// src/lib/auth.js
+import * as jwtDecode from "jwt-decode"; // ESM-compatible import
 
 export const TOKEN_KEY = "token";
 
@@ -13,7 +14,7 @@ export const getUser = () => {
   const t = getToken();
   if (!t) return null;
   try {
-    return jwtDecode(t); // expects { id, username, role }
+    return jwtDecode.default(t); // use .default with ESM import
   } catch (e) {
     console.warn("Invalid token:", e);
     return null;
